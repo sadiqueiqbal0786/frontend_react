@@ -7,13 +7,19 @@ import { urlFor, client } from '../../client';
 
 const About = () => {
   const [abouts, setAbouts] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const query = '*[_type == "abouts"]';
 
-    client.fetch(query).then((data) => {
-      setAbouts(data);
-    });
+    client.fetch(query).then(
+      (data) => {
+        setAbouts(data);
+      },
+      (err) => {
+        setError(err); // Handle the error if the fetch fails
+      }
+    );
   }, []);
 
   const [showDescription, setShowDescription] = useState({});
@@ -32,28 +38,33 @@ const About = () => {
         <span>Is the Foundation of Good Business Insights.</span>
       </h2>
 
-      <div className="app__profiles">
-        {abouts.map((about, index) => (
-          <motion.div
-            whileInView={{ opacity: 1 }}
-            whileHover={{ scale: 1.1 }}
-            transition={{ duration: 0.5, type: 'tween' }}
-            className="app__profile-item"
-            key={about.title + index}
-            onClick={() => toggleDescription(about.title)}
-          >
-            <img src={urlFor(about.imgUrl)} alt={about.title} />
-            <h2 className="bold-text" style={{ marginTop: 20 }}>
-              {about.title}
-            </h2>
-            {showDescription[about.title] && (
-              <p className="p-text" style={{ marginTop: 10 }}>
-                {about.description}
-              </p>
-            )}
-          </motion.div>
-        ))}
-      </div>
+      {error ? (
+        // Handle the error case
+        <div>Error: {error.message}</div>
+      ) : (
+        <div className="app__profiles">
+          {abouts.map((about, index) => (
+            <motion.div
+              whileInView={{ opacity: 1 }}
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.5, type: 'tween' }}
+              className="app__profile-item"
+              key={about.title + index}
+              onClick={() => toggleDescription(about.title)}
+            >
+              <img src={urlFor(about.imgUrl)} alt={about.title} />
+              <h2 className="bold-text" style={{ marginTop: 20 }}>
+                {about.title}
+              </h2>
+              {showDescription[about.title] && (
+                <p className="p-text" style={{ marginTop: 10 }}>
+                  {about.description}
+                </p>
+              )}
+            </motion.div>
+          ))}
+        </div>
+      )}
     </>
   );
 };

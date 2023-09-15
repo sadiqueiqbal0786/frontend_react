@@ -31,9 +31,10 @@ import logo from '../assets/logo.png';
 import spotify from '../assets/spotify.png';
 import flutter from '../assets/flutter.png';
 import graphql from '../assets/graphql.png';
-import java from '../assets/java.png'
-import ds from '../assets/ds.png'
-import db from '../assets/db.png'
+import java from '../assets/java.png';
+import ds from '../assets/ds.png';
+import db from '../assets/db.png';
+import github from '../assets/github.png';
 export default {
   email,
   mobile,
@@ -71,4 +72,5 @@ export default {
   java,
   db,
   ds,
+  github,
 };
